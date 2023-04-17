@@ -5,6 +5,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import connect from './config/db/index.js';
 import route from './routes/index.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const methodOverride = require('method-override');
+
 const filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(filename);
 
@@ -24,6 +29,8 @@ app.use(
 );
 app.use(express.json());
 
+app.use(methodOverride('_method'));
+
 // HTTP Logger
 app.use(morgan('combined'));
 
@@ -32,6 +39,9 @@ app.engine(
     'hbs',
     engine({
         extname: '.hbs',
+        helpers: {
+            sum: (a, b) => a + b,
+        },
     }),
 );
 app.set('view engine', 'hbs');

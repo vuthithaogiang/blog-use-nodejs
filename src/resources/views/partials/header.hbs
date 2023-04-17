@@ -1,17 +1,28 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/">Blog</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+ <div class="container">
+    <a class="navbar-brand" href="/">Blog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+            <img src="https://images.squarespace-cdn.com/content/v1/5cb9ef147eb88c5caefa30b3/1678201328170-0S7YIP6S4LK8UUNFEUB5/Fridge+Tour+%26+Organization+-+How+to+Store+Food+Correctly+-+Her86m2+8.jpg?format=750w" alt="" class="user-avatar">
+            Chee
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="/products/create">Create Product</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="/me/stored/products">My Products</a></li>
+          <li><a class="dropdown-item" href="#">My blog</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Log out</a></li>
+        </ul>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/products/create">Create Product</a>
-      </li>
-    </ul>
-  </div>
+      </ul>
+    </div>
+ </div>
 </nav>

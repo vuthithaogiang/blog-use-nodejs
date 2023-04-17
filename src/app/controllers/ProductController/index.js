@@ -1,6 +1,9 @@
 import MyModel from '../../models/Product.js';
 
-import { mongooseToObject } from '../../../until/mongoose.js';
+import {
+    mongooseToObject,
+    multiMongooseToObject,
+} from '../../../until/mongoose.js';
 
 class ProductController {
     // GET products/:slug
@@ -29,6 +32,25 @@ class ProductController {
             .save()
             .then(() => res.redirect('/'))
             .catch((error) => {});
+    }
+
+    //GET: products/:id/edit
+    edit(rep, res, next) {
+        MyModel.findById(rep.params.id)
+
+            .then((product) =>
+                res.render('products/edit', {
+                    product: mongooseToObject(product),
+                }),
+            )
+
+            .catch(next);
+    }
+    //PUT: products/:id
+    update(rep, res, next) {
+        MyModel.updateOne({ _id: rep.params.id }, rep.body)
+            .then(() => res.redirect('/me/stored/products'))
+            .catch(next);
     }
 }
 
