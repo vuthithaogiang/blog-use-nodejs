@@ -3,9 +3,13 @@ import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import connect from './config/db/index.js';
 import route from './routes/index.js';
 const filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(filename);
+
+//Connect to DB
+connect();
 
 // cau hinh app
 const app = express();
@@ -30,14 +34,11 @@ app.engine(
         extname: '.hbs',
     }),
 );
-app.set('view engine',
- 'hbs');
-app.set('views',
- path.join(__dirname, 'resources/views'));
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'resources', 'views'));
 
 //Route init
 route(app);
-
-          app.listen(port, () => {
+app.listen(port, () => {
     console.log(`Example app listening on port http:://localhost:${port}`);
 });
