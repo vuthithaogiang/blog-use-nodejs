@@ -1,8 +1,12 @@
-       @import 'variables';
+@import 'variables';
 * {
     box-sizing: border-box;
 }
 
 body {
     color: #222;
+}
+
+.card-product-item {
+    margin-bottom: 16px;
 }

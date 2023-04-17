@@ -1,23 +1,23 @@
 import MyModel from '../../models/Product.js';
 
+import { multiMongooseToObject } from '../../../until/mongoose.js';
+
 class SiteController {
-    index(rep, res) {
+    index(rep, res, next) {
         MyModel.find({})
+
             .then(function (documents) {
-                console.log(documents);
-                res.json(documents);
+                // let products = documents.map(product => product.toObject() )
+
+                // res.json(documents);
+                res.render('home', {
+                    products: multiMongooseToObject(documents),
+                });
             })
 
-            .catch(function (err) {
-                console.log('Failed!!!!1');
-            });
+            .catch((err) => next(err));
     }
-    //    MyModel.find({}, function (err, prods) {
-    //        if(!err) { res.json(prods)}
-    //        else {res.status(400).json({err: 'Failed!!!'})};
-    //    });
     // GET /
-    // res.render('home');
 
     // GET /search
     search(rep, res) {
