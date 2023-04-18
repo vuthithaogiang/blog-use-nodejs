@@ -1,9 +1,6 @@
 import MyModel from '../../models/Product.js';
 
-import {
-    mongooseToObject,
-    multiMongooseToObject,
-} from '../../../until/mongoose.js';
+import { mongooseToObject } from '../../../until/mongoose.js';
 
 class ProductController {
     // GET products/:slug
@@ -50,6 +47,13 @@ class ProductController {
     update(rep, res, next) {
         MyModel.updateOne({ _id: rep.params.id }, rep.body)
             .then(() => res.redirect('/me/stored/products'))
+            .catch(next);
+    }
+
+    //DELETE: products/:id
+    destroy(rep, res, next) {
+        MyModel.deleteOne({ _id: rep.params.id })
+            .then(() => res.redirect('back'))
             .catch(next);
     }
 }
