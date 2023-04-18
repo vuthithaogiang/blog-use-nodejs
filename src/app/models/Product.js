@@ -1,10 +1,5 @@
-
 import mongoose from 'mongoose';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-
-var slug = require('mongoose-slug-generator')
-mongoose.plugin(slug);
+// mongoose.plugin(slug);
 const Schema = mongoose.Schema;
 
 const Product = new Schema({
@@ -13,7 +8,7 @@ const Product = new Schema({
     image: { type: String, maxLength: 255 },
     videoId: { type: String, require: true },
     level: { type: String },
-    slug: { type: String, slug: 'name', unique: true },
+    slug: { type: String, unique: true },
     createAt: { type: Date, default: Date.now },
     updateAt: { type: Date, default: Date.now },
 });
