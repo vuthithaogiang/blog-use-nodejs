@@ -5,6 +5,7 @@ const routerDetails = express.Router();
 
 routerDetails.get('/create', productController.create);
 routerDetails.post('/store', productController.store);
+routerDetails.post('/handle-form-actions', productController.handleFormActions);
 routerDetails.get('/:id/edit', productController.edit);
 routerDetails.put('/:id', productController.update);
 routerDetails.patch('/:id/restore', productController.restore);

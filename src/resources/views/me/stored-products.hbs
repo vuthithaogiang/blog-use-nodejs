@@ -1,12 +1,32 @@
-<div class="mt-4">
+<form name="container-form" method="POST" class="mt-4" action="/products/handle-form-actions">
     <div>
       <h3>List My Products</h3>
       <a href="/me/trash/products">Go to Trash ({{deletedCount}})</a>
       <a style="margin-left:20px" href="/products/create">Create Product</a>
+     
+      <div class="mt-4 d-flex align-items-center">
+         {{!-- check box --}}
+         <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+              <label class="form-check-label"  for="checkbox-all">
+                Choose all
+              </label>
+         </div>
+         
+       {{!-- select --}}
+      
+         <select class="form-control form-control-sm checkbox-select-all-options" name="action" required="true">
+            <option value="">--  Action  --</option>
+            <option value="delete">Delete</option>   
+        </select>
+     
+        <button class="btn btn-primary btn-sm check-all-submit-btn disabled">Go</button>
+      </div>
     </div>
-    <table class="table table mt-4">
-  <thead>
+  <table class="table table mt-4">
+     <thead>
     <tr>
+      <th></th>
       <th scope="col">#</th>
       <th scope="col">Name</th>
       <th scope="col">Level</th>
@@ -14,10 +34,15 @@
       <th></th>
     </tr>
   </thead>
-  <tbody>
+   <tbody>
 
     {{#each products}}
     <tr>
+       <td>
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="productIds[]" value="{{this._id}}" >  
+         </div>
+      </td>
       <th scope="row">{{sum @index 1}}</th>
       <td>{{this.name}}</td>
       <td>{{this.level}}</td>
@@ -37,9 +62,9 @@
        </tr>
     {{/each}}
    
-  </tbody>
-</table>
-</div>
+   </tbody>
+  </table>
+</form>
 
 {{!-- Confirm delete Products --}}
 <!-- Modal -->
@@ -76,6 +101,14 @@
      var deleteForm = document.forms['delete-product-form'];
 
      var btnDeleteProduct = document.getElementById('btn-delete-product');
+
+     var checkboxAll = $('#checkbox-all');
+     var productItemCheckbox = $('input[name="productIds[]"]');
+
+     var checkAllSubmitBtn = $('.check-all-submit-btn');
+     var containerForm = document.forms['container-form'];
+
+     
     
     //when dialog confirm clicked
      $('#delele-product-modal').on('show.bs.modal', function (event) {
@@ -88,6 +121,53 @@
       deleteForm.action = '/products/' + productId +'?_method=DELETE';
       deleteForm.submit();
      }
+
+     //when checkbox all change
+     checkboxAll.change(function () {
+       var isCheckedAll = $(this).prop('checked');
+       if(isCheckedAll === true){
+            productItemCheckbox.prop('checked', true);
+       }
+       else{
+            productItemCheckbox.prop('checked', false);
+       }
+       renderCheckAllSubmitBtn();
+     });
+
+    // Product Item checkbox checked
+    productItemCheckbox.change(function() {
+      var isCheckItemAll = productItemCheckbox.length === $('input[name="productIds[]"]:checked').length;
+      
+      if(isCheckItemAll === true){
+        checkboxAll.prop('checked', true);
+      }
+      else{
+        checkboxAll.prop('checked', false);
+      }
+      renderCheckAllSubmitBtn();
+    })
+
+    //check all submit btn clicked
+
+    checkAllSubmitBtn.on('submit', function (e) {
+      var isSubmittable  = !$(this).hasClass('disabled');
+      if(isSubmittable === false){
+        e.preventDefault();
+      }
+    })
+
+    // re-Render disable button delete all
+    function renderCheckAllSubmitBtn() {
+        var checkedCount = $('input[name="productIds[]"]:checked').length;
+        if(checkedCount > 0 ) {
+           checkAllSubmitBtn.removeClass('disabled')
+        }
+        else{
+          checkAllSubmitBtn.addClass('disabled');
+        }
+    }
+
+    
   })
   
 </script>

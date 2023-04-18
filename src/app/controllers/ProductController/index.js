@@ -97,6 +97,20 @@ class ProductController {
             .then(() => res.redirect('back'))
             .catch(next);
     }
+
+    // POST: products/handle-form-actions
+    handleFormActions(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                MyModel.delete({ _id: { $in: req.body.productIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next);
+                break;
+            default:
+                res.json({ error: 'Action is invalid!!!' });
+                break;
+        }
+    }
 }
 
 const productController = new ProductController();
