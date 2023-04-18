@@ -1,8 +1,9 @@
+
 import mongoose from 'mongoose';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-var slug = require('mongoose-slug-generator');
+var slug = require('mongoose-slug-generator')
 mongoose.plugin(slug);
 const Schema = mongoose.Schema;
 

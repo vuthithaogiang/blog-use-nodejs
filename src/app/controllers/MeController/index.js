@@ -5,7 +5,7 @@ import { multiMongooseToObject } from '../../../until/mongoose.js';
 class MeController {
     // GET /me/stored/products
     storedProducts(req, res, next) {
-        MyModel.find({})
+        MyModel.find({deletedAt: null})
             .then((products) =>
                 res.render('me/stored-products', {
                     products: multiMongooseToObject(products),
