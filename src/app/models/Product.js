@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-// mongoose.plugin(slug);
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 const Schema = mongoose.Schema;
 
 const Product = new Schema({
@@ -11,6 +13,13 @@ const Product = new Schema({
     slug: { type: String, unique: true },
     createAt: { type: Date, default: Date.now },
     updateAt: { type: Date, default: Date.now },
+});
+
+// Add plugin for soft delete
+const mongooseDelete = require('mongoose-delete');
+Product.plugin(mongooseDelete, {
+    deletedAt: true,
+    overrideMethods: 'all',
 });
 
 const MyModel = mongoose.model('Product', Product);

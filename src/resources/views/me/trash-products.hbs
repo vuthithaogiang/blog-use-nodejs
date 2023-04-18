@@ -1,0 +1,74 @@
+<div class="mt-4">
+    <div>
+     <a href="/me/stored/products">List Products</a>
+      <h3>Products Deleted</h3>
+    </div>
+    <table class="table table mt-4">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Level</th>
+      <th scope="col">Create at</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {{#each products}}
+    <tr>
+      <th scope="row">{{sum @index 1}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.level}}</td>
+      <td>{{this.createAt}}</td>
+      <td>
+        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}" >To Restore</a>
+        <a href="" class="btn btn-link btn-delete" data-toggle="modal" data-id="{{this._id}}" data-target="#delele-product-modal">To Delete</a>
+      </td>
+    </tr>
+     
+     {{else}}
+       <tr>
+        <td colspan="5" class="text-center">
+           Your Trash is Empty.
+        </td>
+       </tr>
+    {{/each}}
+   
+  </tbody>
+</table>
+</div>
+
+<form name="restore-product-form" method="POST"></form>
+<form name="delete-product-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var restoreBtn = $('.btn-restore');
+        var restoreForm = document.forms['restore-product-form'];
+
+        var deteleForm = document.forms['delete-product-form'];
+        var deleteBtn = $('.btn-delete')
+
+        //Restore btn cliked
+        restoreBtn.click (function (e) {
+            e.preventDefault();
+            var productId = $(this).data('id');
+            restoreForm.action = '/products/' + productId + '/restore?_method=PATCH'
+            restoreForm.submit();
+        })
+
+        deleteBtn.click(function (e) {
+            e.preventDefault();
+            var productId = $(this).data('id');
+            console.log(productId);
+           deteleForm.action = '/products/' + productId + '/force?_method=DELETE';
+           deteleForm.submit();
+        })
+       
+    });
+   
+
+  
+
+</script>

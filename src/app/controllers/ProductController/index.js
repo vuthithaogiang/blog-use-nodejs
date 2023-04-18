@@ -80,9 +80,21 @@ class ProductController {
             .catch(next);
     }
 
-    //DELETE: products/:id
+    // DELETE: products/:id
     destroy(rep, res, next) {
-        MyModel.deleteOne({ _id: rep.params.id })
+        MyModel.delete({ _id: rep.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    //DELETE: products/:id/force
+    forceDestroy(req, res, next) {
+        MyModel.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    // PATCH: products/:id/restore
+    restore(req, res, next) {
+        MyModel.restore({ _id: req.params.id })
             .then(() => res.redirect('back'))
             .catch(next);
     }
