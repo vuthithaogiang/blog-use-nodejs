@@ -5,14 +5,31 @@ import { multiMongooseToObject } from '../../../until/mongoose.js';
 class MeController {
     // GET /me/stored/products
     storedProducts(req, res, next) {
-        MyModel.find({})
-            .then((products) =>
+        Promise.all([MyModel.find({}), MyModel.countDocumentsDeleted()])
+            .then(([products, deletedCount]) =>
                 res.render('me/stored-products', {
+                    deletedCount,
                     products: multiMongooseToObject(products),
                 }),
             )
 
             .catch(next);
+
+        // MyModel.countDocumentsDeleted()
+        //    .then((deletedCount) => {
+        //       console.log(deletedCount)
+        //    })
+
+        //    .catch(() => {});
+
+        // MyModel.find({})
+        //     .then((products) =>
+        //         res.render('me/stored-products', {
+        //             products: multiMongooseToObject(products),
+        //         }),
+        //     )
+
+        //     .catch(next);
     }
 
     //GET: /me/trash/products

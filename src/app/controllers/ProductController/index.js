@@ -50,14 +50,13 @@ class ProductController {
 
     //POST: products/store
     store(rep, res, next) {
-        const formData = rep.body;
         const nameInput = rep.body.name;
-        formData.image = `https://img.youtube.com/vi/${rep.body.videoId}/sddefault.jpg`;
-        formData.slug = titleToSlug(nameInput);
-        const product = new MyModel(formData);
+        rep.body.image = `https://img.youtube.com/vi/${rep.body.videoId}/sddefault.jpg`;
+        rep.body.slug = titleToSlug(nameInput);
+        const product = new MyModel(rep.body);
         product
             .save()
-            .then(() => res.redirect('/'))
+            .then(() => res.redirect('/me/stored/products'))
             .catch((error) => {});
     }
 
