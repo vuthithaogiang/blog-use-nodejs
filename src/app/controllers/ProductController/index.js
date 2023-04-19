@@ -1,4 +1,5 @@
 import MyModel from '../../models/Product.js';
+import Counter from '../../models/Counter.js';
 
 import { mongooseToObject } from '../../../until/mongoose.js';
 // kindacode.com
@@ -50,14 +51,41 @@ class ProductController {
 
     //POST: products/store
     store(rep, res, next) {
-        const nameInput = rep.body.name;
-        rep.body.image = `https://img.youtube.com/vi/${rep.body.videoId}/sddefault.jpg`;
-        rep.body.slug = titleToSlug(nameInput);
-        const product = new MyModel(rep.body);
-        product
-            .save()
-            .then(() => res.redirect('/me/stored/products'))
-            .catch((error) => {});
+        Counter.findOneAndUpdate(
+            {
+                id: 'autoval',
+            },
+            {
+                $inc: { seq: 1 },
+            },
+            {
+                new: true,
+            },
+        )
+            .then((counter) => {
+                let seqId;
+                //    Init one couter
+                if (counter == null) {
+                    const newValue = new Counter({ id: 'autoval', seq: 1 });
+                    newValue.save();
+                    seqId = 1;
+                } else {
+                    seqId = counter.seq;
+                }
+
+                const nameInput = rep.body.name;
+                rep.body.image = `https://img.youtube.com/vi/${rep.body.videoId}/sddefault.jpg`;
+                rep.body.slug = titleToSlug(nameInput);
+                rep.body.id = seqId;
+                const product = new MyModel(rep.body);
+
+                product
+                    .save()
+                    .then(() => res.redirect('/me/stored/products'))
+                    .catch(next);
+            })
+
+            .catch(next);
     }
 
     //GET: products/:id/edit
