@@ -25,12 +25,18 @@
     </div>
   <table class="table table mt-4">
      <thead>
-    <tr>
+    <tr >
       <th></th>
       <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Level</th>
-      <th scope="col">Create at</th>
+      <th scope="col" >Name
+       {{{sortable 'name' _sort}}}
+      </th>
+      <th scope="col"  >Level  
+      {{{sortable 'level' _sort}}}
+      </th>
+      <th scope="col"  >Create at  
+      {{{sortable 'createAt' _sort}}}
+      </th>
       <th></th>
     </tr>
   </thead>

@@ -5,7 +5,15 @@ import { multiMongooseToObject } from '../../../until/mongoose.js';
 class MeController {
     // GET /me/stored/products
     storedProducts(req, res, next) {
-        Promise.all([MyModel.find({}), MyModel.countDocumentsDeleted()])
+        let productQuery = MyModel.find({});
+
+        if (req.query.hasOwnProperty('_sort')) {
+            productQuery = productQuery.sort({
+                [req.query.column]: req.query.type,
+            });
+        }
+
+        Promise.all([productQuery, MyModel.countDocumentsDeleted()])
             .then(([products, deletedCount]) =>
                 res.render('me/stored-products', {
                     deletedCount,

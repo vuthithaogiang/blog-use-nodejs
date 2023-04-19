@@ -22,3 +22,18 @@ body {
     max-width: 160px;
     margin: 0 12px;
 }
+tr {
+    display: grid;
+    grid-template-columns: 5% 5% 30% 20% 30% auto;
+}
+
+tr th {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+tr th svg {
+    fill: crimson;
+    margin-bottom: -2px;
+}
