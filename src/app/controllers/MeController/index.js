@@ -43,7 +43,19 @@ class MeController {
     //GET: /me/trash/products
 
     trashProducts(req, res, next) {
-        MyModel.findDeleted({})
+        let productQuery =  MyModel.findDeleted({});
+
+        if (req.query.hasOwnProperty('_sort')) {
+            productQuery = productQuery.sort({
+                [req.query.column]: req.query.type,
+            });
+        }
+
+        // res.json(req.query)
+        // return ;
+
+        productQuery
+          
             .then((products) =>
                 res.render('me/trash-products', {
                     products: multiMongooseToObject(products),
