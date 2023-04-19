@@ -1,11 +1,33 @@
-<div class="mt-4">
+<form class="mt-4" name="container-form" method="post" action="/products/handle-form-actions">
     <div>
      <a href="/me/stored/products">List Products</a>
       <h3>Products Deleted</h3>
+
+      <div class="mt-4 d-flex align-items-center">
+         {{!-- check box --}}
+         <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+              <label class="form-check-label"  for="checkbox-all">
+                Choose all
+              </label>
+         </div>
+         
+       {{!-- select --}}
+      
+         <select class="form-control form-control-sm checkbox-select-all-options" name="action" required="required">
+            <option value="">--  Action  --</option>
+            <option value="restore">Restore</option>   
+            <option value="force-destroy">Delete from Trash</option>   
+        </select>
+     
+        <button class="btn btn-primary btn-sm check-all-submit-btn" disabled="disabled">Go</button>
+      </div>
+
     </div>
     <table class="table table mt-4">
   <thead>
     <tr>
+     <th></th>
       <th scope="col">#</th>
       <th scope="col">Name</th>
       <th scope="col">Level</th>
@@ -17,6 +39,11 @@
 
     {{#each products}}
     <tr>
+      <td>
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="productIds[]" value="{{this._id}}" >  
+         </div>
+       </td>
       <th scope="row">{{sum @index 1}}</th>
       <td>{{this.name}}</td>
       <td>{{this.level}}</td>
@@ -37,7 +64,7 @@
    
   </tbody>
 </table>
-</div>
+</form>
 
 <form name="restore-product-form" method="POST"></form>
 <form name="delete-product-form" method="POST"></form>
@@ -48,8 +75,14 @@
         var restoreForm = document.forms['restore-product-form'];
 
         var deteleForm = document.forms['delete-product-form'];
-        var deleteBtn = $('.btn-delete')
+        var deleteBtn = $('.btn-delete');
 
+        var checkboxAll = $('#checkbox-all');
+
+        var checkboxProductItem = $('input[name="productIds[]"]');
+        var checkAllSubmitBtn = $('.check-all-submit-btn');
+        var formSubmit = $('form[name="container-form"]');
+      
         //Restore btn cliked
         restoreBtn.click (function (e) {
             e.preventDefault();
@@ -65,7 +98,48 @@
            deteleForm.action = '/products/' + productId + '/force?_method=DELETE';
            deteleForm.submit();
         })
+
+        //when clicked check box all
+       checkboxAll.change(function () {
+          var isCheckedAll = $(this).prop('checked');
+          if(isCheckedAll === true){
+            checkboxProductItem.prop('checked', true);
+          }
+          else{
+            checkboxProductItem.prop('checked', false);
+           
+          }
+          renderCheckAllSubmitBtn();
+       })
+
+       //when clicked check bon item product
+       checkboxProductItem.change(function (){
        
+          var isCheckedAll = checkboxProductItem.length === $('input[name="productIds[]"]:checked').length;
+          if( isCheckedAll){
+            checkboxAll.prop('checked', true)
+          }
+          else{
+            checkboxAll.prop('checked', false)
+          }
+          renderCheckAllSubmitBtn();
+       })
+
+       //re-render button go
+       function renderCheckAllSubmitBtn() {
+          var checkCount = $('input[name="productIds[]"]:checked').length;
+          console.log(checkCount);
+          if(checkCount > 0 ){
+              checkAllSubmitBtn.removeAttr('disabled', false)
+          }
+          else{
+            checkAllSubmitBtn.attr('disabled', true)
+          }
+       }
+
+  
+
+         
     });
    
 

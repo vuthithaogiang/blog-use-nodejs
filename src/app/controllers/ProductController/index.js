@@ -106,6 +106,16 @@ class ProductController {
                     .then(() => res.redirect('back'))
                     .catch(next);
                 break;
+
+            case 'restore':
+                MyModel.restore({ _id: { $in: req.body.productIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next);
+                break;
+            case 'force-destroy':
+                console.log('case force destroy');
+
+                break;
             default:
                 res.json({ error: 'Action is invalid!!!' });
                 break;
