@@ -27,7 +27,9 @@
      <thead>
     <tr >
       <th></th>
-      <th scope="col">#</th>
+      <th scope="col">ID
+        {{{ sortable 'id' _sort}}}
+      </th>
       <th scope="col" >Name
        {{{sortable 'name' _sort}}}
       </th>
@@ -49,7 +51,7 @@
               <input class="form-check-input" type="checkbox" name="productIds[]" value="{{this._id}}" >  
          </div>
        </td>
-      <th scope="row">{{this.id}}</th>
+      <td>{{this.id}}</td>
       <td>{{this.name}}</td>
       <td>{{this.level}}</td>
       <td>{{this.createAt}}</td>
